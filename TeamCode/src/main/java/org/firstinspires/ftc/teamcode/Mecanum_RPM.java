@@ -10,12 +10,11 @@ public class Mecanum_RPM extends LinearOpMode {
 
     private DcMotor frontLeftMotor, frontRightMotor, backLeftMotor, backRightMotor;
 
-    // Speed mode
+
     private static final double NORMAL_SPEED = 0.7;
     private static final double TURBO_SPEED  = 1.0;
 
-    // ===== ENCODER =====
-    // GoBILDA 312RPM / 435RPM thường là 537.6
+
     private static final double TICKS_PER_REV = 537.6;
 
     private int flLast = 0, frLast = 0, blLast = 0, brLast = 0;
@@ -78,7 +77,6 @@ public class Mecanum_RPM extends LinearOpMode {
 
             drive(fwd, strafe, rotate, speed);
 
-            // ===== RPM =====
             double flRPM = calcRPM(frontLeftMotor,  flTimer, () -> flLast, v -> flLast = v);
             double frRPM = calcRPM(frontRightMotor, frTimer, () -> frLast, v -> frLast = v);
             double blRPM = calcRPM(backLeftMotor,   blTimer, () -> blLast, v -> blLast = v);
@@ -94,7 +92,7 @@ public class Mecanum_RPM extends LinearOpMode {
         }
     }
 
-    // ===== MECANUM DRIVE =====
+
     public void drive(double fwd, double stf, double rotate, double speed) {
 
         double fl = fwd + stf + rotate;
@@ -113,7 +111,7 @@ public class Mecanum_RPM extends LinearOpMode {
         backRightMotor.setPower((br / max) * speed);
     }
 
-    // ===== TÍNH RPM =====
+
     private double calcRPM(
             DcMotor motor,
             ElapsedTime timer,
