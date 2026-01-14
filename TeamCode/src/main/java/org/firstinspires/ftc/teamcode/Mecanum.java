@@ -51,7 +51,7 @@ public class Mecanum extends LinearOpMode {
 
             telemetry.addData("Speed Mode",
                     gamepad1.right_bumper ? "TURBO (100%)" : "NORMAL (70%)");
-            telemetry.update():
+            telemetry.update();
         }
     }
 
