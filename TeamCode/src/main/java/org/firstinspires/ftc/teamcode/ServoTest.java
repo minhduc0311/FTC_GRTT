@@ -18,7 +18,7 @@ public class ServoTest extends OpMode {
 
     // Vị trí servo
     private final double SERVO_0_DEG = 0.0;
-    private final double SERVO_90_DEG = 0.5;
+    private final double SERVO_90_DEG = 0.67;
 
     @Override
     public void init() {

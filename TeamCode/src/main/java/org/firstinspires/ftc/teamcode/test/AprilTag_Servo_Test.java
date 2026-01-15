@@ -11,31 +11,35 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 
-@TeleOp(name = "Test: AprilTag CoreHex Turret")
-public class AprilTag_CoreHex_TeleOp extends LinearOpMode {
+@TeleOp(name = "Test: AprilTag CoreHex Search")
+public class AprilTag_Servo_Test extends LinearOpMode {
 
-    // ===== CONFIG =====
-    private static final String CAMERA_NAME = "Webcam 1"; // Ten webcam trong Robot Config
-    private static final String TURRET_MOTOR_NAME = "turret"; // Ten dong co Core Hex
+    private static final String CAMERA_NAME = "Webcam 1";
+    private static final String TURRET_MOTOR_NAME = "turret";
 
-    private static final double TURN_P = 0.02; // He so P cho goc lech (deg)
+    private static final double SEARCH_POWER = 0.3;
+    private static final double TURN_P = 0.02;
     private static final double MAX_TURN_POWER = 0.4;
     private static final double DEAD_BAND_DEG = 1.5;
-    private static final double TURN_DIRECTION = 1.0; // Doi thanh -1 neu quay nguoc
+    private static final double TURN_DIRECTION = 1.0; // doi thanh -1 neu quay nguoc
 
-    // ===== HARDWARE =====
-    private DcMotor turret;
-
-    // ===== VISION =====
+    private DcMotor turretMotor;
     private VisionPortal visionPortal;
     private AprilTagProcessor aprilTag;
 
     @Override
     public void runOpMode() {
-        initHardware();
-        initAprilTag();
+        turretMotor = hardwareMap.get(DcMotor.class, TURRET_MOTOR_NAME);
+        turretMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        turretMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        telemetry.addLine("Ready - Can AprilTag vao tam camera");
+        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+        visionPortal = VisionPortal.easyCreateWithDefaults(
+                hardwareMap.get(WebcamName.class, CAMERA_NAME),
+                aprilTag
+        );
+
+        telemetry.addLine("Ready - servo se quay khi khong thay tag");
         telemetry.update();
 
         waitForStart();
@@ -43,47 +47,32 @@ public class AprilTag_CoreHex_TeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             List<AprilTagDetection> detections = aprilTag.getDetections();
 
-            double motorPower = 0.0;
+            double servoPower;
             AprilTagDetection best = chooseBestDetection(detections);
 
-            if (best != null) {
-                double bearing = best.ftcPose.bearing; // do lech trai/phai so voi tam camera
-
-                if (Math.abs(bearing) > DEAD_BAND_DEG) {
-                    motorPower = Range.clip(bearing * TURN_P * TURN_DIRECTION,
+            if (best == null) {
+                servoPower = SEARCH_POWER;
+                telemetry.addLine("No AprilTag detected");
+            } else {
+                double bearing = best.ftcPose.bearing;
+                if (Math.abs(bearing) <= DEAD_BAND_DEG) {
+                    servoPower = 0.0; // dung quay khi da nhin thang vao tag
+                } else {
+                    servoPower = Range.clip(bearing * TURN_P * TURN_DIRECTION,
                             -MAX_TURN_POWER, MAX_TURN_POWER);
                 }
-
                 telemetry.addData("Tag ID", best.id);
                 telemetry.addData("Bearing (deg)", "%.1f", bearing);
-                telemetry.addData("Range (in)", "%.1f", best.ftcPose.range);
-            } else {
-                telemetry.addLine("No AprilTag detected");
             }
 
-            turret.setPower(motorPower);
-
-            telemetry.addData("Turret Power", "%.2f", motorPower);
+            turretMotor.setPower(servoPower);
+            telemetry.addData("Motor Power", "%.2f", servoPower);
             telemetry.update();
 
             sleep(20);
         }
 
         visionPortal.close();
-    }
-
-    private void initHardware() {
-        turret = hardwareMap.get(DcMotor.class, TURRET_MOTOR_NAME);
-        turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    }
-
-    private void initAprilTag() {
-        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
-        visionPortal = VisionPortal.easyCreateWithDefaults(
-                hardwareMap.get(WebcamName.class, CAMERA_NAME),
-                aprilTag
-        );
     }
 
     private AprilTagDetection chooseBestDetection(List<AprilTagDetection> detections) {
@@ -106,5 +95,4 @@ public class AprilTag_CoreHex_TeleOp extends LinearOpMode {
         return best;
     }
 }
-
 
