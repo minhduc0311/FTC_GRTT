@@ -21,7 +21,7 @@ public class AprilTag_CoreHex_TeleOp extends LinearOpMode {
     private static final double TURN_P = 0.02; // He so P cho goc lech (deg)
     private static final double MAX_TURN_POWER = 0.4;
     private static final double DEAD_BAND_DEG = 1.5;
-    private static final double TURN_DIRECTION = 1.0; // Doi thanh -1 neu quay nguoc
+    private static final doub\\\le TURN_DIRECTION = 1.0; // Doi thanh -1 neu quay nguoc
 
     // ===== HARDWARE =====
     private DcMotor turret;
