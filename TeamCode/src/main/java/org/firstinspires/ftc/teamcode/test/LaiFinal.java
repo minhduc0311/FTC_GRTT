@@ -32,6 +32,8 @@ public class LaiFinal extends LinearOpMode {
     // [CO THE CHINH] toc do quay banh da (FLYWHEEL_POWER)
     private DcMotor flywheel;
     private static final double FLYWHEEL_POWER = 1.0;
+    private boolean flywheelOn = false;
+    private boolean bWasPressed = false;
 
     // ===== BALL BLOCKER SERVOS =====
     // [CO THE CHINH] goc chan bong va thoi gian mo/dong
@@ -51,6 +53,8 @@ public class LaiFinal extends LinearOpMode {
     private DcMotor intakeLeft;
     private DcMotor intakeRight;
     private static final double INTAKE_POWER = 1.0;
+    private boolean intakeOn = false;
+    private boolean startWasPressed = false;
 
     @Override
     public void runOpMode() {
@@ -186,9 +190,16 @@ public class LaiFinal extends LinearOpMode {
     }
 
     private void handleFlywheelMotor() {
-        double power = gamepad1.b ? FLYWHEEL_POWER : 0.0;
+        boolean bIsPressed = gamepad1.b;
+        if (bIsPressed && !bWasPressed) {
+            flywheelOn = !flywheelOn;
+        }
+        bWasPressed = bIsPressed;
+
+        double power = flywheelOn ? FLYWHEEL_POWER : 0.0;
         flywheel.setPower(power);
         telemetry.addData("Flywheel Power", "%.1f", power);
+        telemetry.addData("Flywheel", flywheelOn ? "ON" : "OFF");
     }
 
     private void handleBlockerServo() {
@@ -224,10 +235,17 @@ public class LaiFinal extends LinearOpMode {
     }
 
     private void handleIntake() {
-        double power = gamepad1.start ? INTAKE_POWER : 0.0;
+        boolean startIsPressed = gamepad1.start;
+        if (startIsPressed && !startWasPressed) {
+            intakeOn = !intakeOn;
+        }
+        startWasPressed = startIsPressed;
+
+        double power = intakeOn ? INTAKE_POWER : 0.0;
         intakeLeft.setPower(power);
         intakeRight.setPower(power);
         telemetry.addData("Intake Power", "%.1f", power);
+        telemetry.addData("Intake", intakeOn ? "ON" : "OFF");
     }
 }
 
