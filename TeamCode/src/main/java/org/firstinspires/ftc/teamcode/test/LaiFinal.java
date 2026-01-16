@@ -31,14 +31,13 @@ public class LaiFinal extends LinearOpMode {
     // ===== FLYWHEEL MOTOR (HD HEX NO GEARBOX) =====
     // [CO THE CHINH] toc do quay banh da (FLYWHEEL_POWER)
     private DcMotor flywheel;
-    private static final double FLYWHEEL_POWER = 1.0;
+    private static final double FLYWHEEL_POWER = 0.5;
     private boolean flywheelOn = false;
     private boolean bWasPressed = false;
 
     // ===== BALL BLOCKER SERVOS =====
     // [CO THE CHINH] goc chan bong va thoi gian mo/dong
     private Servo blockerLeft;
-    private Servo blockerRight;
     private static final double BLOCKER_ANGLE_MIN = 0.0;
     private static final double BLOCKER_ANGLE_MAX = 120.0;
     private static final double BLOCKER_SERVO_MAX_POS = 0.89;
@@ -114,7 +113,6 @@ public class LaiFinal extends LinearOpMode {
         // Blocker servos (chan bong)
         // [CO THE CHINH] ten 2 servo chan bong trong Robot Config
         blockerLeft = hardwareMap.get(Servo.class, "lamgay");
-        blockerRight = hardwareMap.get(Servo.class, "ducgay");
         setBlockerAngle(BLOCKER_ANGLE_MIN);
 
         // Intake
@@ -231,7 +229,6 @@ public class LaiFinal extends LinearOpMode {
     private void setBlockerAngle(double angleDeg) {
         double pos = (angleDeg / BLOCKER_ANGLE_MAX) * BLOCKER_SERVO_MAX_POS;
         blockerLeft.setPosition(pos);
-        blockerRight.setPosition(pos);
     }
 
     private void handleIntake() {
