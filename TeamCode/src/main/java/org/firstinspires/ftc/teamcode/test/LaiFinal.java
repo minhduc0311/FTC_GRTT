@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.test;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -31,7 +32,7 @@ public class LaiFinal extends LinearOpMode {
     // ===== FLYWHEEL MOTOR (HD HEX NO GEARBOX) =====
     // [CO THE CHINH] toc do quay banh da (FLYWHEEL_POWER)
     private DcMotor flywheel;
-    private static final double FLYWHEEL_POWER = 0.5;
+    private static final double FLYWHEEL_POWER = 1;
     private boolean flywheelOn = false;
     private boolean bWasPressed = false;
 
@@ -108,7 +109,7 @@ public class LaiFinal extends LinearOpMode {
         flywheel = hardwareMap.get(DcMotor.class, "flywheel");
         flywheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         flywheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        flywheel.setDirection(DcMotor.Direction.REVERSE);
+        flywheel.setDirection(DcMotor.Direction.FORWARD);
 
         // Blocker servos (chan bong)
         // [CO THE CHINH] ten 2 servo chan bong trong Robot Config

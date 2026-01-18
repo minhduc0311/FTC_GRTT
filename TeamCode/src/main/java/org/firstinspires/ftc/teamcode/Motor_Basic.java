@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Motor_Basic {
     private DcMotor motor;
     private Telemetry telemetry;
-    private double power = 1; //tuy chinh
+    private double power = 0.7; //tuy chinh
 
     public void init(HardwareMap hwmap, Telemetry telemetry) {
         this.motor = hardwareMap.get(DcMotor.class, "flywheel");//remember to change motor's name
@@ -30,7 +30,7 @@ public class Motor_Basic {
     }
     public void setPower(double power) {
         this.power = power;
-        this.power = Range.clip(this.power, 0.0, 1.0);
+        this.power = Range.clip(this.power, 0.0, 0.7);
         this.motor.setPower(this.power);
     }
     public double getPower() {
