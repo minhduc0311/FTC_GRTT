@@ -50,7 +50,7 @@ public class flywheel_vidu extends OpMode {
         startWasPressed = startIsPressed;
         backWasPressed  = backIsPressed;
 
-        flywheelPower = Range.clip(flywheelPower, 0.0, 1.0);
+        flywheelPower = Range.clip(flywheelPower, 0.0, 0.7);
         flywheel.setPower(flywheelPower);
 
         telemetry.addData("START", "Increase Power");
