@@ -54,7 +54,7 @@ public class flywheel_testPS4 extends OpMode {
         dpadUpWasPressed = dpadUpIsPressed;
         dpadDownWasPressed = dpadDownIsPressed;
 
-        flywheelPower = Range.clip(flywheelPower, 0.0, 1.0);
+        flywheelPower = Range.clip(flywheelPower, 0.0, 0.7);
 
         this.flywheel.setPower(flywheelPower);
 
